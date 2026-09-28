@@ -180,6 +180,38 @@ button[type="submit"]:hover {
   .card { flex-direction: column; }
   .side-panel { flex: 0 0 auto; }
 }
+.help-toggle {
+  position: relative; z-index: 2;
+  margin-top: 22px;
+  background: none;
+  border: 1px solid rgba(255,255,255,0.35);
+  color: #E8DCC8;
+  font-size: 12.5px;
+  font-weight: 600;
+  padding: 9px 16px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+.help-toggle:hover {
+  background: rgba(198,167,94,0.18);
+  border-color: #C6A75E;
+}
+.help-box {
+  position: relative; z-index: 2;
+  display: none;
+  margin-top: 18px;
+  background: rgba(0,0,0,0.55);
+  border-radius: 12px;
+  padding: 18px 20px;
+  font-size: 12.5px;
+  line-height: 1.75;
+  color: rgba(255,255,255,0.85);
+}
+.help-box.open { display: block; }
+.help-box ol { margin: 0; padding-left: 18px; }
+.help-box li { margin-bottom: 10px; }
+.help-box a { color: #C6A75E; }
 </style>
 </head>
 <body>
@@ -200,6 +232,16 @@ button[type="submit"]:hover {
       <li>Instagram kullanıcı adını gir</li>
       <li>Token'ı yapıştır ve bağla</li>
     </ul>
+
+    <button type="button" class="help-toggle" onclick="document.getElementById('helpBox').classList.toggle('open')">
+      Token nasıl alınır? ↓
+    </button>
+    <div class="help-box" id="helpBox">
+      <ol>
+                        <li><strong>Önce Instagram hesabını Profesyonel (İşletme) hesaba çevir.</strong></li>
+                        <li>Detaylı token alma anlatımı için <a href="/static/rehber/Instagram_Token_Final.pdf" target="_blank">buradaki rehbere</a> bakabilirsin.</li>
+                    </ol>
+    </div>
   </div>
 
   <div class="form-panel">
