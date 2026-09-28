@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<title>Gönderi - AICommentBot</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Inter', sans-serif;
+  background: #f7f5f0;
+  color: #1F2A44;
+  min-height: 100vh;
+}
+
+.topbar {
+  background: #1F2A44;
+  color: white;
+  padding: 16px 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  color: white;
+}
+.brand .dot {
+  width: 9px; height: 9px;
+  border-radius: 50%;
+  background: #C6A75E;
+}
+.back-link {
+  text-decoration: none;
+  color: rgba(255,255,255,0.75);
+  font-size: 13px;
+  font-weight: 600;
+  padding: 8px 18px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.25);
+  transition: all 0.2s ease;
+}
+.back-link:hover {
+  color: white;
+  border-color: #C6A75E;
+  background: rgba(198,167,94,0.12);
+}
+
+.layout {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 48px 80px;
+  display: grid;
+  grid-template-columns: 380px 1fr;
+  gap: 40px;
+  align-items: start;
+}
+.cover-col {
+  position: sticky;
+  top: 40px;
+}
+.cover-col img {
+  width: 100%;
+  border-radius: 14px;
+  box-shadow: 0 12px 30px rgba(31,42,68,0.15);
+  margin-bottom: 14px;
+}
+.ig-link {
+  display: inline-block;
+  text-decoration: none;
+  color: #1F2A44;
+  font-size: 13px;
+  font-weight: 500;
+}
+.ig-link:hover {
+  color: #C6A75E;
+}
+
+.disclaimer {
+  background: #E8DCC8;
+  color: #1F2A44;
+  border-radius: 10px;
+  padding: 14px 18px;
+  font-size: 13px;
+  line-height: 1.5;
+  margin-bottom: 20px;
+}
+
+.stats-row {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 20px;
+  padding: 0 2px;
+}
+.stat-item {
+  font-size: 13px;
+  color: #6b6558;
+}
+.stat-item b {
+  color: #1F2A44;
+  font-weight: 700;
+}
+
+.comment-card {
+  background: white;
+  border-radius: 14px;
+  padding: 22px 24px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 14px rgba(31,42,68,0.06);
+}
+.comment-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+.avatar-circle {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: #1F2A44;
+  color: #C6A75E;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+.username {
+  font-weight: 600;
+  font-size: 14.5px;
+  color: #1F2A44;
+  text-decoration: none;
+}
+.username:hover {
+  color: #C6A75E;
+  text-decoration: underline;
+}
+.timestamp {
+  font-size: 12px;
+  color: #9a917d;
+  margin-left: auto;
+}
+.comment-text {
+  font-size: 14.5px;
+  color: #2d3748;
+  margin-bottom: 14px;
+  line-height: 1.55;
+}
+.ai-reply {
+  background: #f7f5f0;
+  border-left: 3px solid #C6A75E;
+  border-radius: 0 8px 8px 0;
+  padding: 12px 16px;
+  margin-bottom: 14px;
+}
+.ai-reply-label {
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: #C6A75E;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+.ai-reply-text {
+  font-size: 14px;
+  color: #1F2A44;
+  line-height: 1.55;
+}
+.status-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.badge {
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  padding: 4px 12px;
+  border-radius: 999px;
+}
+.badge.pending { background: #fbeee0; color: #9a5b1f; }
+.badge.approved { background: #dff2e2; color: #1e7e42; }
+
+.actions {
+  display: flex;
+  gap: 8px;
+}
+.actions form { display: inline; }
+.btn {
+  border: none;
+  border-radius: 999px;
+  padding: 8px 16px;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-approve { background: linear-gradient(135deg,#4caf7d,#2f8f5e);
+ color: white;
+ }
+.btn-approve {
+  background: linear-gradient(135deg, #4caf7d, #2f8f5e);
+  color: white;
+}
+.btn-approve:hover {
+  background: linear-gradient(135deg, #2f8f5e, #256e49);
+}
+.btn-edit {
+  background: linear-gradient(135deg, #E8DCC8, #d9c9a8);
+  color: #1F2A44;
+}
+.btn-edit:hover {
+  background: linear-gradient(135deg, #d9c9a8, #c9b78e);
+}
+.btn-reject {
+  background: linear-gradient(135deg, #e07a6b, #c0483a);
+  color: white;
+}
+.btn-reject:hover {
+  background: linear-gradient(135deg, #c0483a, #a5301f);
+}
+
+.edit-box {
+  display: none;
+  margin-top: 14px;
+}
+.edit-box.open { display: block; }
+.edit-box textarea {
+  width: 100%;
+  min-height: 80px;
+  border: 1px solid #e5e0d3;
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  color: #1F2A44;
+  resize: vertical;
+  margin-bottom: 10px;
+}
+.btn-save { background: #1F2A44; color: #E8DCC8; }
+.btn-save:hover { background: #C6A75E; color: #1F2A44; }
+
+@media (max-width: 800px) {
+  .layout { grid-template-columns: 1fr; }
+  .cover-col { position: static; }
+}
+
+.cover-frame { position: relative; }
+.cover-home-link {
+  display: inline-block;
+  margin-bottom: 12px;
+  color: #1F2A44;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+}
+.cover-home-link:hover { color: #C6A75E; }
+
+.ai-reply-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px; }
+.regenerate-form { margin: 0; }
+.regenerate-btn {
+  background: transparent;
+  border: none;
+  font-size: 17px;
+  color: #C6A75E;
+  cursor: pointer;
+  line-height: 1;
+  padding: 3px 7px;
+  border-radius: 50%;
+  transition: background 0.2s ease, transform 0.3s ease;
+}
+.regenerate-btn:hover { background: rgba(198,167,94,0.18); transform: rotate(180deg); }
+
+.settings-link { text-decoration: none; color: rgba(255,255,255,0.85); font-size: 13.5px; font-weight: 500; transition: color 0.2s ease; }
+.settings-link:hover { color: #C6A75E; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a class="brand" href="{{ url_for('gallery') }}"><span class="dot"></span> AICommentBot</a>
+  <a class="settings-link" href="{{ url_for('settings') }}">AI Ayarları</a>
+</div>
+
+<div class="layout">
+  <div class="cover-col">
+    <a class="cover-home-link" href="{{ url_for('gallery') }}">← Ana Sayfa</a>
+    <div class="cover-frame">
+      {% if post.media_url %}
+    <img src="{{ post.media_url }}" alt="Gönderi görseli">
+    {% endif %}    </div>
+    {% if post.permalink %}
+    <a class="ig-link" href="{{ post.permalink }}" target="_blank" rel="noopener">Gönderiyi Instagram'da Gör →</a>
+    {% endif %}
+  </div>
+
+
+  <div class="comments-col">
+    <div class="disclaimer">
+      AI cevapları otomatik üretilir ve zaman zaman hatalı olabilir. Yayınlamadan önce kontrol etmeni öneririz.
+    </div>
+
+    {% set approved_count = namespace(value=0) %}
+    {% for comment in post.comments %}
+      {% if comment[7] == 'approved' %}
+        {% set approved_count.value = approved_count.value + 1 %}
+      {% endif %}
+    {% endfor %}
+    <div class="stats-row">
+      <div class="stat-item"><b>{{ post.comments|length }}</b> yorum</div>
+      <div class="stat-item"><b>{{ approved_count.value }}</b> onaylandı</div>
+      <div class="stat-item"><b>{{ post.comments|length - approved_count.value }}</b> bekliyor</div>
+    </div>
+
+    {% for comment in post.comments %}
+    <div class="comment-card">
+      <div class="comment-head">
+        <div class="avatar-circle">{{ comment[2][0]|upper if comment[2] else "?" }}</div>
+        <a class="username" href="https://www.instagram.com/{{ comment[2] }}/" target="_blank" rel="noopener">@{{ comment[2] }}</a>
+        <div class="timestamp">{{ comment[5].strftime('%d.%m.%Y %H:%M') }}</div>
+      </div>
+      <div class="comment-text">{{ comment[3] }}</div>
+      <div class="ai-reply">
+        <div class="ai-reply-head">
+            <span class="ai-reply-label">AI Yanıtı</span>
+            {% if comment[7] != 'approved' %}
+            <form method="POST" action="{{ url_for('regenerate_comment', comment_id=comment[0]) }}" class="regenerate-form">
+              <button class="regenerate-btn" type="submit" title="Yeniden üret">&#8635;</button>
+            </form>
+            {% endif %}
+          </div>
+        <div class="ai-reply-text">{{ comment[4] }}</div>
+      </div>
+      <div class="status-row">
+        {% if comment[7] == 'approved' %}
+        <span class="badge approved">Onaylandı</span>
+        {% else %}
+        <span class="badge pending">BEKLİYOR</span>
+        <div class="actions">
+          <form method="POST" action="{{ url_for('approve_comment', comment_id=comment[0]) }}">
+            <button class="btn btn-approve" type="submit">Onayla</button>
+          </form>
+          <button class="btn btn-edit" type="button" onclick="toggleEdit({{ comment[0] }})">Düzenle</button>
+          <form method="POST" action="{{ url_for('reject_comment', comment_id=comment[0]) }}">
+            <button class="btn btn-reject" type="submit">Reddet</button>
+          </form>
+        </div>
+        {% endif %}
+      </div>
+      {% if comment[7] != 'approved' %}
+      <div class="edit-box" id="edit-{{ comment[0] }}">
+        <form method="POST" action="{{ url_for('edit_comment', comment_id=comment[0]) }}">
+          <textarea name="new_reply">{{ comment[4] }}</textarea>
+          <button class="btn btn-save" type="submit">Kaydet</button>
+        </form>
+      </div>
+      {% endif %}
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+<script>
+function toggleEdit(id) {
+  const box = document.getElementById('edit-' + id);
+  box.classList.toggle('open');
+}
+</script>
+
+</body>
+</html>

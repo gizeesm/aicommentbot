@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<title>{{ user.username }} - AICommentBot</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Inter', sans-serif;
+  background: #f7f5f0;
+  color: #1F2A44;
+  min-height: 100vh;
+}
+
+.topbar {
+  background: #1F2A44;
+  color: white;
+  padding: 16px 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: 0.04em;
+}
+.brand .dot {
+  width: 9px; height: 9px;
+  border-radius: 50%;
+  background: #C6A75E;
+}
+.logout {
+  text-decoration: none;
+  color: rgba(255,255,255,0.75);
+  font-size: 13px;
+  font-weight: 600;
+  padding: 8px 18px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.25);
+  transition: all 0.2s ease;
+}
+.logout:hover {
+  color: white;
+  border-color: #C6A75E;
+  background: rgba(198,167,94,0.12);
+}
+
+.header {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 56px 48px 32px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+.header h1 {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 800;
+  font-size: 2.3rem;
+  color: #1F2A44;
+}
+.header p {
+  color: #6b6558;
+  font-size: 14.5px;
+  margin-top: 8px;
+}
+.stats {
+  display: flex;
+  gap: 36px;
+}
+.stat {
+  text-align: right;
+}
+.stat b {
+  display: block;
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.7rem;
+  font-weight: 800;
+  color: #C6A75E;
+}
+.stat span {
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #9a917d;
+}
+
+.divider {
+  max-width: 1200px;
+  margin: 0 auto;
+  border: none;
+  border-top: 1px solid #e5e0d3;
+}
+
+.grid {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 48px 80px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 28px;
+}
+.card {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  border-radius: 14px;
+  overflow: hidden;
+  background: white;
+  box-shadow: 0 6px 18px rgba(31,42,68,0.08);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  transform-style: preserve-3d;
+  perspective: 800px;
+}
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 18px 34px rgba(31,42,68,0.18);
+}
+.cover-wrap {
+  position: relative;
+  aspect-ratio: 2 / 3;
+  overflow: hidden;
+  background: #1F2A44;
+}
+.cover-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.35s ease;
+}
+.card:hover .cover-wrap img {
+  transform: scale(1.06) rotate(-0.5deg);
+}
+.accent-bar {
+  height: 4px;
+  background: linear-gradient(90deg, #C6A75E, #E8DCC8);
+}
+.meta {
+  padding: 14px 16px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.meta .count {
+  font-size: 13px;
+  color: #6b6558;
+  font-weight: 500;
+}
+.date {
+  font-size: 12.5px;
+  color: #9a917d;
+  font-weight: 500;
+}
+
+.empty {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 100px 48px;
+  text-align: center;
+  color: #9a917d;
+  font-size: 15px;
+}
+
+.topbar-links { display: flex; align-items: center; gap: 20px; }
+.settings-link { text-decoration: none; color: rgba(255,255,255,0.85); font-size: 13.5px; font-weight: 500; transition: color 0.2s ease; }
+.settings-link:hover { color: #C6A75E; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="brand"><span class="dot"></span> AICommentBot</div>
+  <div class="topbar-links">
+    <a class="settings-link" href="{{ url_for('settings') }}">AI Ayarları</a>
+    <a class="logout" href="{{ url_for('logout') }}">Çıkış Yap</a>
+  </div>
+</div>
+
+<div class="header">
+  <div>
+    <h1>{{ user.username }}</h1>
+    <p>Paylaşılan gönderiler, okuyucu yorumları ve AI yanıtları</p>
+  </div>
+  <div class="stats">
+    <div class="stat"><b>{{ posts|length }}</b><span>Gönderi</span></div>
+    <div class="stat"><b>{{ total_comments }}</b><span>Yorum</span></div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<div class="grid">
+  {% for post in posts %}
+  <a class="card" href="{{ url_for('post_detail', media_id=post.media_id) }}">
+    <div class="cover-wrap">
+      {% if post.media_url %}
+      <img src="{{ post.media_url }}" alt="Gönderi görseli">
+      {% endif %}
+    </div>
+    <div class="accent-bar"></div>
+    <div class="meta">
+      <span class="count">{{ post.comments|length }} yorum</span>
+      <span class="date">{{ post.latest.strftime('%d.%m.%Y') }}</span>
+    </div>
+  </a>
+  {% else %}
+  <div class="empty">Henüz gönderi yok.</div>
+  {% endfor %}
+</div>
+
+</body>
+</html>
+

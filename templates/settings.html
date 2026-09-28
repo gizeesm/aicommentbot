@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<title>AI Ayarları - AICommentBot</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Inter', sans-serif;
+  background: #f7f5f0;
+  color: #1F2A44;
+  min-height: 100vh;
+}
+.topbar {
+  background: #1F2A44;
+  color: white;
+  padding: 16px 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  color: white;
+}
+.brand .dot {
+  width: 9px; height: 9px;
+  border-radius: 50%;
+  background: #C6A75E;
+}
+.topbar-links { display: flex; align-items: center; gap: 20px; }
+.settings-link, .logout {
+  text-decoration: none;
+  color: rgba(255,255,255,0.85);
+  font-size: 13.5px;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+.settings-link:hover, .logout:hover { color: #C6A75E; }
+.container {
+  max-width: 640px;
+  margin: 48px auto;
+  padding: 0 24px;
+}
+h1 {
+  font-family: 'Poppins', sans-serif;
+  font-size: 24px;
+  margin-bottom: 8px;
+}
+.subtitle {
+  color: #5b6478;
+  font-size: 14px;
+  margin-bottom: 28px;
+  line-height: 1.5;
+}
+.card {
+  background: white;
+  border-radius: 14px;
+  padding: 28px;
+  box-shadow: 0 2px 10px rgba(31,42,68,0.06);
+}
+label {
+  display: block;
+  font-weight: 600;
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+.hint {
+  font-size: 12.5px;
+  color: #8a91a3;
+  margin-bottom: 12px;
+  line-height: 1.5;
+}
+textarea {
+  width: 100%;
+  min-height: 160px;
+  padding: 14px;
+  border: 1px solid #e2e0d8;
+  border-radius: 10px;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  color: #1F2A44;
+  resize: vertical;
+}
+textarea:focus { outline: none; border-color: #C6A75E; }
+.save-btn {
+  margin-top: 18px;
+  background: #1F2A44;
+  color: #E8DCC8;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+.save-btn:hover { background: #C6A75E; color: #1F2A44; }
+.success-msg {
+  margin-top: 14px;
+  color: #1e7e42;
+  font-size: 13.5px;
+  font-weight: 600;
+}
+.example {
+  margin-top: 24px;
+  font-size: 13px;
+  color: #8a91a3;
+  line-height: 1.6;
+}
+.example b { color: #1F2A44; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a class="brand" href="{{ url_for('gallery') }}"><span class="dot"></span> AICommentBot</a>
+  <div class="topbar-links">
+    <a class="logout" href="{{ url_for('logout') }}">Çıkış Yap</a>
+  </div>
+</div>
+
+<div class="container">
+  <h1>AI Ayarları</h1>
+  <p class="subtitle">
+    Instagram yorumlarınıza otomatik cevap veren yapay zekânın kimliğini, konuşma
+    tarzını ve tonunu buradan özelleştirebilirsiniz. Hesabınızın konusuna ve marka
+    dilinize uygun bir tanım girerek, yapay zekânın takipçilerinizle nasıl bir
+    üslupla iletişim kuracağını siz belirlersiniz.
+  </p>
+
+  <div class="card">
+    <form method="POST">
+      <label for="ai_instructions">AI'nın kimliği ve kuralları</label>
+      <div class="hint">
+        Boş bırakırsanız yapay zeka mevcut varsayılan kimliğiyle cevap vermeye devam eder.
+      </div>
+      <textarea id="ai_instructions" name="ai_instructions" placeholder="Örnek: Sen bir kahve dükkanının Instagram hesabının sahibisin. Sıcak, samimi ve enerjik bir tonla, kısa cümlelerle cevap ver.">{{ user.ai_instructions or '' }}</textarea>
+      <button class="save-btn" type="submit">Kaydet</button>
+      {% if request.method == 'POST' %}
+      <div class="success-msg">Kaydedildi.</div>
+      {% endif %}
+    </form>
+    <div class="example">
+      <b>Not:</b> Uydurma bilgi vermeme ve emin olmadığı konularda tahmin yürütmeme
+      kuralları her zaman otomatik olarak geçerlidir, bunları burada değiştiremezsin.
+      Burada sadece AI'nın kimliğini ve konuşma tonunu belirliyorsun.
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
